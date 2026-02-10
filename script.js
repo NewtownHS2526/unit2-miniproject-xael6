@@ -1,88 +1,141 @@
 // YOUR CODE HERE
 
-
-const blueButton = document.querySelector("#blue");
-const greenButton = document.querySelector("#green");
-const pinkButton = document.querySelector("#pink");
-const blackButton = document.querySelector("#black");
-
-const favColorDisplay = document.getElementById("favColorDisplay");
-
-favColorDisplay =() => {
-  if (blueButton.clicked) {
-    alert("You picked blue 💙");
-  } else if (greenButton.clicked) {
-    alert ("You picked green 💚"); 
-  } else if (pinkButton.clicked) {
-    alert("You picked pink 💕");
-  } else if (blackButton.clicked){
-        alert("You picked black 🖤")
-  }
-};
-
-
-blueButton.addEventListener("click", favColorDisplay);
-greenButton.addEventListener("click", favColorDisplay);
-pinkButton.addEventListener("click", favColorDisplay);
-blackButton.addEventListener("click", favColorDisplay);
-
 // getRandomInt() - gets a random number between 1 and 100
-function getRandomInt() {
-    return Math.floor(Math.random() * 100) + 1;
-};
-
 // is_dark(hex) - takes in a hex number (for example #123456) and returns true if it's dark and false if it's light.
 
-function is_dark(hex) {
-  if (is_dark(hex)) {
-    return true;
+// Part 1 - Radio Buttons - qS, ifelse, innerHTML
+const radioInput = document.querySelector("#fav_color");
+const radioOutput = document.querySelector("#radio-output");
+
+const displayColor = (e) => {
+  const color = e.target.value;
+  console.log("color", color);
+  let emoji = "";
+
+  if(color === "blue") {
+    emoji = " 💙";
+  } else if(color === "green") {
+    emoji = " 💚";
+  } else if(color === "pink") {
+    emoji = " 💕";
+  } else if(color === "black") {
+    emoji = " 🖤";
+  }
+
+  radioOutput.innerHTML = "You picked " + color + emoji;
+}
+
+radioInput.addEventListener('change', displayColor);
+
+
+// Part 2 - Guess the Number - qS, nested If, innerHTML, valueAsNumber
+const randomNumber = getRandomInt();
+const numInput = document.querySelector("#num-input");
+const numOutput = document.querySelector("#num-output");
+
+const checkNumber = (e) => {
+  const value = e.target.valueAsNumber;
+  console.log("number", value, "answer", randomNumber);
+  e.target.select();
+
+  if( value != randomNumber) {
+    if( value > randomNumber){
+      numOutput.innerHTML = "Not " + value + ", Guess Lower";
+    } else {
+      numOutput.innerHTML = "Not " + value + ", Guess Higher";
+    }
   } else {
-    return false;
+    numOutput.innerHTML = "Hurray! You got it! It's " + randomNumber;
   }
 }
 
-//part 3 code//
-const northamericaButton = document.querySelector("#North-America");
-const southamericaButton = document.querySelector("#South-America");
-const europeButton = document.querySelector("#Europe");
-const asiaButton = document.querySelector("#Asia");
-const africaButton = document.querySelector("#Africa");
-const australiaButton = document.querySelector("#Australia");
-const anarcticaButton = document.querySelector("#Antarctica");
+numInput.addEventListener('change', checkNumber);
 
-const continentDisplay = document.getElementById("continentDisplay");
-namecontinent = () => {
-  if ("North-America".typed) {
-    alert("Correct!");
-  } else if ("South-America".typed) {
-    alert("Correct!");
-  } else if ("Europe".typed) {
-    alert("Correct!");
-  } else if ("Asia".typed) {
-    alert("Correct!");
-  } else if ("Africa".typed) {
-    alert("Correct!");
-  } else if ("Australia".typed) {
-    alert("Correct!");
-  } else if ("Antarctica".typed) {
-    alert("Correct!");
+
+// Part 3 - 7 continents - qS, toLower, elseif, .remove()
+const textInput = document.querySelector("#text-input");
+let count = 0;
+
+const checkContinent = (e) => {
+  const guess = e.target.value.toLowerCase();
+  const srAlert = document.querySelector("#sr-continent-alert");
+  e.target.select();
+
+  // Instead of the following, this is another more advanced way
+
+  // let img = document.querySelector( "#" + guess.replace(' ', '-'));
+  // if(img){
+  //   if(img.classList.contains("hidden")){
+  //     count += 1;
+  //     img.classList.remove("hidden");
+  //     srAlert.innerHTML = `Yes! ${guess} is a continent. ${count} out of 7`;
+  //   } else {
+  //     srAlert.innerHTML = guess + " has already been selected.";
+  //   }
+  // } else {
+  //   srAlert.innerHTML = guess + " is not a continent."
+  // }
+
+
+  let img;
+
+  if(guess === "north america") {
+    img = document.querySelector("#north-america");
+  } else if(guess === "south america") {
+    img = document.querySelector("#south-america");
+  } else if(guess === "antarctica") {
+    img = document.querySelector("#antarctica");
+  } else if(guess === "europe") {
+    img = document.querySelector("#europe");
+  } else if(guess === "africa") {
+    img = document.querySelector("#africa");
+  } else if(guess === "australia") {
+    img = document.querySelector("#australia");
+  } else if(guess === "asia") {
+    img = document.querySelector("#asia");
+  } else {
+    srAlert.innerHTML = guess + " is not a continent."
+    return 0;
   }
-};
 
-northamericaButton.addEventListener("click", namecontinent);
-southamericaButton.addEventListener("click", namecontinent);
-europeButton.addEventListener("click", namecontinent);
-asiaButton.addEventListener("click", namecontinent);
-africaButton.addEventListener("click", namecontinent);
-australiaButton.addEventListener("click", namecontinent);
-anarcticaButton.addEventListener("click", namecontinent);
+  if(img.classList.contains("hidden")){
+    count += 1;
+    img.classList.remove("hidden");
+    srAlert.innerHTML = `Yes! ${guess} is a continent. ${count} out of 7`;
+  } else {
+    srAlert.innerHTML = guess + " has already been selected.";
+  }
+ 
+}
 
-//part 4 code//
+textInput.addEventListener('change', checkContinent);
+
+
+// [Extension] Part 4 - Change the background color
+// use is_dark(#07f3a1), for example to check if a color is "dark"
+const colorInput = document.querySelector("#color");
+const checkbox = document.querySelector("#human");
 const submitButton = document.querySelector("#submit");
-const human = document.querySelector("#human");
+const body = document.querySelector("body");
 
-    robotvalidation = () => {
-  if (is_human(human)) {
-    alert("Im not robot");
-  }};
-submitButton.addEventListener("click", robotvalidation);
+const changeBackground = (e) => {
+  e.preventDefault();
+  const srAlert = document.querySelector("#sr-background-alert");
+  console.log("color", colorInput.value);
+  console.log("is_checked", checkbox.checked);
+
+  if(checkbox.checked) {
+    body.style.background = colorInput.value;
+    if(is_dark(colorInput.value)) {
+      body.style.color = 'white';
+    } else {
+      body.style.color = 'black';
+    }
+    checkbox.checked = false;
+    srAlert.innerHTML = "Background color changed to " + colorInput.value;
+  } else {
+    srAlert.innerHTML = "Background color not changed. Please, select 'I'm not a robot'."
+  }
+}
+
+submitButton.addEventListener('click', changeBackground);
